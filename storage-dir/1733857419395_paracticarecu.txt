@@ -1,0 +1,50 @@
+ATP
+
+Torneos:
+Ubicacion
+Individual / Dobles / Individual y Dobles
+Categoria [Master 1000, 500, 250]
+Superficie [Hierba, Arcilla, Dura]
+Entradas
+Premio $
+Fecha inicio y finalizacion
+Imagen
+
+Tenistas:
+Ranking
+Puntos
+Nombre
+Pais
+FechaNacimineto
+Edad
+Altura (cm)
+Peso (kg)
+FechaProfesional
+Mano (enum)
+Reves (enum)
+Entrenador
+Imagen
+Price Money
+Best Ranking
+%Win/Lost
+
+Cada tenista en cuantos torneos esta
+Cuantos tenistas pueden participar en cada torneo
+
+Perfiles:
+Admin
+Admin de torneo
+Admin de jugadores
+Usuario, solo llamadas get
+
+Para un torneo, sacar los jugadroes
+Para un jugador, sacar los torneos
+
+reparto de puntos:
+
+
+
+PREGUNTAS:
+bidereccionalidad
+jsonview
+many to one

@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="form-container">
+    <form [formGroup]="registerForm" (ngSubmit)="formSubmit()">
+      <h1>Datos del Usuario</h1>
+      <div style="border: 2px solid #e1fe46; width: 80%; margin: 20px;"></div>
+      <input type="text" name="nombre" formControlName="nombre" required placeholder="Nombre">
+      <p *ngIf="errors?.nombre" class="error-message">
+        *{{ errors.nombre }}
+      </p>
+      <input type="text" name="apellidos" formControlName="apellidos" required placeholder="Apellidos">
+      <p *ngIf="errors?.apellidos" class="error-message">
+        *{{ errors.apellidos }}
+      </p>
+      <input type="email" name="email" formControlName="email" required placeholder="Email">
+      <div *ngIf="errors?.email" class="error-message">
+        *{{ errors.email }}
+      </div>
+      <div *ngIf="errors?.error" class="error-message">
+        *{{ errors.message }}
+      </div>
+      <input type="text" name="telefono" formControlName="telefono" required placeholder="Telefono">
+      <div *ngIf="errors?.telefono" class="error-message">
+        *{{ errors.telefono }}
+      </div>
+      <input type="text" name="dni" formControlName="dni" required placeholder="DNI">
+      <div *ngIf="errors?.dni" class="error-message">
+        *{{ errors.dni }}
+      </div>
+      <button>Continuar</button>
+    </form>
+  </div>
+  <div class="info-container">
+    <h1>Detalles de la Subscripcion</h1>
+    <div style="width: 100%; margin-top: 20px; display: flex; flex-direction: column; align-items: start">
+      <p style="font-size: 20px; margin: 10px 0; width: 100%; border-bottom: 2px solid #e1fe46; padding-bottom: 5px;"><b>Que incluye:</b></p>
+      <p>- Acceso al aula virtual durante un mes</p>
+      <p>- Practicas y examenes virtuales para comprobar lo aprendido</p>
+      <p>- Acceso a los videos resubidos de las clases online</p>
+      <p>- Comunicacion con el profesor y los companeros de grupo</p>
+    </div>
+    <p style="font-size: 100px; margin: 30px 0;"><b>50$</b></p>
+  </div>
+</div>

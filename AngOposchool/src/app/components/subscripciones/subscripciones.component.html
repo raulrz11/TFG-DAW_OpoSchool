@@ -1,0 +1,49 @@
+<app-header></app-header>
+
+<div class="card" style="padding: 30px;">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Subscripciones del alumno" icon="pi pi-search mr-2" class="p-button-warning mr-2" (click)="mostrarSubsAlumno()" [disabled]="!selectedSubscripcion" [style]="{ 'background-color': '#e1fe46', 'border': 'none' }"></button>
+      <button pButton pRipple icon="pi pi-trash" class="p-button-danger mr-2" (click)="borrarFiltro()" *ngIf="selectedSubscripcion"></button>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar subscripciones..." (input)="onFilter($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="filteredSubscripciones" [rows]="10" [paginator]="true" [globalFilterFields]="['alumno, fechaInicio', 'fechaFin', 'estado', 'precio', 'deletedAt']" [tableStyle]="{'min-width': '75rem'}"
+           [rowHover]="true" [(selection)]="selectedSubscripcion" dataKey="id">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem; text-align: center;"></th>
+        <th pSortableColumn="alumno" style="min-width:12rem; text-align: center;">Alumno <p-sortIcon field="alumno"></p-sortIcon></th>
+        <th pSortableColumn="fechaInicio" style="min-width:10rem; text-align: center;">Fecha Inicio <p-sortIcon field="fechaInicio"></p-sortIcon></th>
+        <th pSortableColumn="fechaFin" style="min-width:12rem; text-align: center;">Fecha Fin <p-sortIcon field="fechaFin"></p-sortIcon></th>
+        <th pSortableColumn="estado" style="min-width:12rem; text-align: center;">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+        <th pSortableColumn="precio" style="min-width:10rem; text-align: center;">Precio <p-sortIcon field="precio"></p-sortIcon></th>
+        <th pSortableColumn="deletedAt" style=" min-width:10rem; text-align: center;">Fecha de Cancelacion <p-sortIcon field="deletedAt"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-subscripcion>
+      <tr>
+        <td style="width: 4rem; text-align: center;">
+          <p-tableRadioButton [value]="subscripcion"></p-tableRadioButton>
+        </td>
+        <td style="min-width:10rem; text-align: center;">{{subscripcion.alumno}}</td>
+        <td style="min-width:10rem; text-align: center;">{{subscripcion.fechaInicio | date: 'dd-MM-yyyy'}}</td>
+        <td style="min-width:12rem; text-align: center;">{{subscripcion.fechaFin | date: 'dd-MM-yyyy'}}</td>
+        <td style="min-width:12rem; text-align: center;"><span [class]="'estado-' + (subscripcion.estado ? subscripcion.estado.toLowerCase() : '')">{{subscripcion.estado}}</span></td>
+        <td style="min-width:10rem; text-align: center;">{{subscripcion.precio}}$</td>
+        <td style="min-width:10rem; text-align: center;">{{subscripcion.deletedAt}}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        {{subscripciones ? subscripciones.length : 0 }} subscripciones encontradas.
+      </div>
+    </ng-template>
+  </p-table>
+</div>

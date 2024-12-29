@@ -1,0 +1,123 @@
+<app-header></app-header>
+
+<p-toast></p-toast>
+
+<div class="toolbar">
+  <input type="search" placeholder="Buscar tareas..." [(ngModel)]="busqueda" (input)="buscarTareas()">
+  <select [(ngModel)]="grupoSeleccionado" (change)="filtrarTareasPorGrupo()" *ngIf="rol == 'ADMIN' || rol == 'PROFESOR'">
+    <option [value]="0">Todos los Grupos</option>
+    <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.nombre }}</option>
+  </select>
+  <button *ngIf="rol == 'ADMIN' || rol == 'PROFESOR'" type="button" (click)="newTarea()"><i class="fas fa-plus"></i> Nueva Tarea</button>
+</div>
+<div class="container">
+  <div *ngFor="let tarea of tareasFiltradas">
+    <div *ngIf="!tareasFiltradas" style="display: flex; justify-content: center; font-style: italic; font-size: 15px;">No hay tareas por el momento</div>
+    <div class="panelTareas">
+      <div class="acciones" *ngIf="rol == 'ADMIN' || rol == 'PROFESOR'">
+        <button (click)="editTarea(tarea)" type="button" title="Editar tarea" style="background-color: #fbc02d;">
+          <i class="fas fa-pencil"></i>
+        </button>
+        <button (click)="deleteTarea(tarea)" type="button" title="Eliminar tarea" style="background-color: #dc3545;">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div class="bodyTareas">
+        <div style="display: flex; justify-content: center; align-items: center; height: 70%; cursor: pointer" (click)="goTarea(tarea)">
+          <img src="https://cdn.icon-icons.com/icons2/2213/PNG/512/folder_files_archive_icon_134199.png" width="180px" height="180px" style="margin-left: 20px;" />
+        </div>
+        <div style="display: flex; height: 30%; padding: 0 20px;">
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: start; width: 80%;">
+            <h3>{{ tarea.titulo }}</h3>
+            <a (click)="vistaPrevia(tarea)">
+              <b>Vista previa</b>
+            </a>
+          </div>
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 20%;">
+            <a [href]="tarea.archivoUrl + '?download=true'" download="{{tarea.titulo}}" style="text-decoration: none">
+              <button type="button" title="Descargar tarea" style="background-color: #dbf471; margin-top: 20px;">
+                <i class="fas fa-download"></i>
+              </button>
+            </a>
+            <button (click)="newEntrega(tarea)" *ngIf="rol == 'ALUMNO'" type="button" title="Subir entrega" style="background-color: #e1fe46; margin-top: 10px;">
+              <i class="fas fa-upload"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="archivoModal" class="modal" *ngIf="tareaModal">
+  <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <span class="close" (click)="cerrarModal()">&times;</span>
+    <div class="modal-content">
+      <iframe [src]="archivoVistaPrevia" *ngIf="archivoVistaPrevia" id="archivoPreview" class="archivoPreview" width="100%" height="100%"></iframe>
+    </div>
+  </div>
+</div>
+
+<p-dialog [(visible)]="tareaDialog" [style]="{width: '450px'}" [modal]="true" header="Detalles de la Tarea" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field" *ngIf="isCreating" style="display: flex; flex-direction: column; align-items: center;">
+      <label for="grupo">Grupo</label>
+      <select id="grupo" [(ngModel)]="grupoFormSeleccionado">
+        <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.nombre }}</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="titulo">Titulo</label>
+      <input type="text" pInputText id="titulo" [(ngModel)]="tarea.titulo" autofocus />
+      <div *ngIf="errors?.titulo" class="error-message">
+        *{{ errors.titulo }}
+      </div>
+    </div>
+    <div class="field">
+      <label for="descripcion">Descripcion</label>
+      <input type="text" pInputText id="descripcion" [(ngModel)]="tarea.descripcion" />
+      <div *ngIf="errors?.descripcion" class="error-message">
+        *{{ errors.descripcion }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="fechaEntrega">Fecha limite</label>
+      <p-calendar id="fechaEntrega" [(ngModel)]="tarea.fechaEntrega" [showIcon]="true" [touchUI]="true"></p-calendar>
+      <div *ngIf="errors?.fechaEntrega" class="error-message">
+        *{{ errors.fechaEntrega }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="archivoUrl">Archivo de la tarea</label>
+      <input type="file" pInputText id="archivoUrl" (change)="onFileSelected($event)" />
+      <div *ngIf="errors?.archivoUrl" class="error-message">
+        *{{ errors.archivoUrl }}
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Guardar" class="p-button-success m-2" (click)="saveTarea()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="entregaDialog" [style]="{width: '450px'}" [modal]="true" header="Detalles de la Entrega" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="archivoEntregaUrl">Archivo de la entrega</label>
+      <input type="file" pInputText id="archivoEntregaUrl" (change)="onFileSelected($event)" required />
+      <div *ngIf="errors?.archivoUrl" class="error-message">
+        *{{ errors.archivoUrl }}
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Entregar" class="p-button-success m-2" (click)="saveEntrega()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

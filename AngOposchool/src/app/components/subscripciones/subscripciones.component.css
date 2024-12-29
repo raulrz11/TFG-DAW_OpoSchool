@@ -1,0 +1,23 @@
+.estado-activa {
+  color: white;
+  background-color: #689f38;
+  padding: 0.5rem;
+  font-size: 13px;
+  border-radius: 0.25rem;
+}
+
+.estado-pendiente {
+  color: white;
+  background-color: #fbc02d;
+  padding: 0.5rem;
+  font-size: 13px;
+  border-radius: 0.25rem;
+}
+
+.estado-inactiva {
+  color: white;
+  background-color: #dc3545;
+  padding: 0.5rem;
+  font-size: 13px;
+  border-radius: 0.25rem;
+}

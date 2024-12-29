@@ -1,0 +1,124 @@
+<app-header></app-header>
+
+<p-toast></p-toast>
+
+<div class="card" style="padding: 30px;">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Nuevo Alumno" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="newAlumno()"></button>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar alumnos..." (input)="onFilter($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="alumnos" [rows]="10" [paginator]="true" [globalFilterFields]="['nombre', 'apellidos', 'email', 'telefono', 'dni']" [tableStyle]="{'min-width': '75rem'}"
+           [rowHover]="true" dataKey="id">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre" style="min-width:10rem; text-align: center;">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th pSortableColumn="apellidos" style="min-width:12rem; text-align: center;">Apellidos <p-sortIcon field="apellidos"></p-sortIcon></th>
+        <th pSortableColumn="email" style="min-width:12rem; text-align: center;">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="telefono" style="min-width:10rem; text-align: center;">Telefono <p-sortIcon field="telefono"></p-sortIcon></th>
+        <th pSortableColumn="dni" style=" min-width:10rem; text-align: center;">DNI <p-sortIcon field="dni"></p-sortIcon></th>
+        <th style="min-width:10rem; text-align: center;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-alumno>
+      <tr>
+        <td style="min-width:10rem; text-align: center;">{{alumno.nombre}}</td>
+        <td style="min-width:12rem; text-align: center;">{{alumno.apellidos}}</td>
+        <td style="min-width:12rem; text-align: center;">{{alumno.email}}</td>
+        <td style="min-width:10rem; text-align: center;">{{alumno.telefono}}</td>
+        <td style="min-width:10rem; text-align: center;">{{alumno.dni}}</td>
+        <td style="min-width:10rem; text-align: center;">
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-sm mr-2" (click)="editAlumno(alumno)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm" (click)="deleteAlumno(alumno)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        {{alumnos ? alumnos.length : 0 }} alumnos encontrados.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="alumnoDialog" [style]="{width: '450px'}" [modal]="true" header="Detalles del Alumno" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input type="text" pInputText id="nombre" [(ngModel)]="alumno.nombre" autofocus />
+      <div *ngIf="errors?.nombre" class="error-message">
+        *{{ errors.nombre }}
+      </div>
+    </div>
+    <div class="field">
+      <label for="apellidos">Apellidos</label>
+      <input type="text" pInputText id="apellidos" [(ngModel)]="alumno.apellidos" />
+      <div *ngIf="errors?.apellidos" class="error-message">
+        *{{ errors.apellidos }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="text" pInputText id="email" [(ngModel)]="alumno.email" />
+      <div *ngIf="errors?.email" class="error-message">
+        *{{ errors.email }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="telefono">Telefono</label>
+      <input type="text" pInputText id="telefono" [(ngModel)]="alumno.telefono" />
+      <div *ngIf="errors?.telefono" class="error-message">
+        *{{ errors.telefono }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="dni">DNI</label>
+      <input type="text" pInputText id="dni" [(ngModel)]="alumno.dni" />
+      <div *ngIf="errors?.dni" class="error-message">
+        *{{ errors.dni }}
+      </div>
+    </div>
+
+    <div class="card mt-6" *ngIf="isCreating">
+      <h3 style="margin: 20px 0; border-bottom: 2px solid #e1fe46;">Datos de la Tarjeta</h3>
+      <div class="field">
+        <label for="numTarjeta">Numero de tarjeta</label>
+        <input type="text" pInputText id="numTarjeta" [(ngModel)]="alumno.tarjeta.numTarjeta" maxlength="16" />
+        <div *ngIf="errors['tarjeta.numTarjeta']" class="error-message">
+          *{{ errors['tarjeta.numTarjeta'] }}
+        </div>
+      </div>
+      <div class="field">
+        <label for="fechaExpiracion">Fecha de Expiración</label>
+        <input type="text" pInputText id="fechaExpiracion" [(ngModel)]="alumno.tarjeta.fechaExpiracion" maxlength="5" />
+        <div *ngIf="errors['tarjeta.fechaExpiracion']" class="error-message">
+          *{{ errors['tarjeta.fechaExpiracion'] }}
+        </div>
+      </div>
+      <div class="field">
+        <label for="cvv">CVV</label>
+        <input type="text" pInputText id="cvv" [(ngModel)]="alumno.tarjeta.codigoSeguridad" maxlength="3" />
+        <div *ngIf="errors['tarjeta.codigoSeguridad']" class="error-message">
+          *{{ errors['tarjeta.codigoSeguridad'] }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Guardar" class="p-button-success m-2" (click)="saveAlumno()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+

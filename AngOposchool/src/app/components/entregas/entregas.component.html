@@ -1,0 +1,84 @@
+<app-header></app-header>
+
+<p-toast></p-toast>
+
+<div class="card" style="padding: 30px;">
+    <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+        <ng-template pTemplate="left">
+            <select id="grupo" [(ngModel)]="grupoSeleccionado" (change)="selectTarea()">
+                <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.nombre }}</option>
+            </select>
+            <select id="tarea" [(ngModel)]="tareaSeleccionada" (change)="loadEntregas()">
+                <option *ngFor="let tarea of tareas" [value]="tarea.id">{{ tarea.titulo }}</option>
+            </select>
+        </ng-template>
+        <ng-template pTemplate="right">
+            <input type="text" pInputText placeholder="Buscar entregas..." (input)="onFilter($event)" />
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="entregas" [rows]="10" [paginator]="true" [globalFilterFields]="['estado', 'fechaEntrega', 'calificacion', 'comentarios', 'tarea', 'alumno']" [tableStyle]="{'min-width': '75rem'}"
+             [rowHover]="true" dataKey="id">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="estado" style="min-width:10rem; text-align: center;">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+                <th pSortableColumn="fechaEntrega" style="min-width:12rem; text-align: center;">Fecha entrega <p-sortIcon field="fechaEntrega"></p-sortIcon></th>
+                <th pSortableColumn="calificacion" style="min-width:8rem; text-align: center;">Calificacion <p-sortIcon field="calificacion"></p-sortIcon></th>
+                <th pSortableColumn="comentarios" style="min-width:10rem; text-align: center;">Comentarios <p-sortIcon field="comentarios"></p-sortIcon></th>
+                <th pSortableColumn="tarea" style=" min-width:10rem; text-align: center;">Tarea <p-sortIcon field="tarea"></p-sortIcon></th>
+                <th pSortableColumn="alumno" style=" min-width:10rem; text-align: center;">Alumno <p-sortIcon field="alumno"></p-sortIcon></th>
+                <th style="min-width:12rem; text-align: center;">Acciones</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-entrega>
+            <tr>
+                <td style="min-width:10rem; text-align: center;">{{entrega.estado}}</td>
+                <td style="min-width:12rem; text-align: center;">{{entrega.fechaEntrega | date: 'dd-MM-yyyy'}}</td>
+                <td style="min-width:8rem; text-align: center;">{{entrega.calificacion}}</td>
+                <td style="min-width:10rem; text-align: center;">{{entrega.comentarios}}</td>
+                <td style="min-width:10rem; text-align: center;">{{entrega.tarea}}</td>
+                <td style="min-width:10rem; text-align: center;">{{entrega.alumno}}</td>
+                <td style="min-width:12rem; text-align: center;">
+                    <a [href]="entrega.archivoUrl + '?download=true'" download="{{entrega.alumno}}" style="text-decoration: none">
+                        <button pButton pRipple icon="pi pi-file" type="button" class="p-button-rounded p-button-info p-button-sm mr-2" title="Descargar entrega"></button>
+                    </a>
+                    <button pButton pRipple icon="pi pi-pencil" title="Corregir entrega" class="p-button-rounded p-button-warning p-button-sm mr-2" (click)="editEntrega(entrega)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm" (click)="deleteEntrega(entrega)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                {{entregas ? entregas.length : 0 }} entregas encontradas.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="entregaDialog" [style]="{width: '450px'}" [modal]="true" header="Correccioin de la Entrega" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="calificacion">Calificacion</label>
+            <input type="number" pInputText id="calificacion" [(ngModel)]="entrega.calificacion" autofocus />
+            <div *ngIf="errors?.calificacion" class="error-message">
+                *{{ errors.calificacion }}
+            </div>
+        </div>
+        <div class="field">
+            <label for="comentarios">Comentarios</label>
+            <input type="text" pInputText id="comentarios" [(ngModel)]="entrega.comentarios" />
+            <div *ngIf="errors?.comentarios" class="error-message">
+                *{{ errors.comentarios }}
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Corregir" class="p-button-success m-2" (click)="correctEntrega()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

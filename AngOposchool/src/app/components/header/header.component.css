@@ -1,0 +1,118 @@
+header{
+  display: flex;
+  background-color: #333333;
+  border-bottom: 2px solid #e1fe46;
+  color: white;
+  padding: 15px 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  width: 20%;
+}
+
+.header-left h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.header-center{
+  width: 80%;
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.menu li {
+  position: relative;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+}
+
+.menu a:hover{
+  border-bottom: 2px solid #e1fe46;
+}
+
+.menu .dropdown:hover .submenu {
+  display: block;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.submenu li {
+  margin: 0;
+}
+
+.submenu a {
+  color: #333333;
+}
+
+.submenu a.active {
+  width: 100%;
+  background-color: #e1fe46;
+}
+
+.submenu li:hover {
+  background-color: #e1fe46;
+  margin: 0;
+}
+
+.perfil{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: white;
+  text-decoration: none;
+  color: #333333;
+}
+
+button{
+  padding: 10px;
+  background: none;
+  color: #dc3545;
+  border: none;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+button:hover{
+  color: #ff001a;
+}

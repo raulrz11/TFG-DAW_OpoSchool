@@ -1,0 +1,26 @@
+<header>
+  <div class="header-left">
+    <h1>OpoSchool</h1>
+  </div>
+  <div class="header-center">
+    <ul class="menu">
+      <li><a routerLink="/tareas" routerLinkActive="active">Tareas</a></li>
+      <li><a routerLink="/videos" routerLinkActive="active">Videos</a></li>
+      <li *ngIf="rol == 'ADMIN' || rol == 'PROFESOR'"><a routerLink="/entregas" routerLinkActive="active">Entregas</a></li>
+      <li class="dropdown" *ngIf="rol == 'ADMIN'">
+        <a>Administración</a>
+        <ul class="submenu">
+          <li><a routerLink="/alumnos" routerLinkActive="active">Alumnos</a></li>
+          <li><a routerLink="/profesores" routerLinkActive="active">Profesores</a></li>
+          <li><a routerLink="/grupos" routerLinkActive="active">Grupos</a></li>
+          <li><a routerLink="/usuarios" routerLinkActive="active">Usuarios</a></li>
+          <li><a routerLink="/subscripciones" routerLinkActive="active">Subscripciones</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="header-right">
+    <button (click)="logOut()" type="button">Cerrar sesion</button>
+    <a routerLink="/perfil" class="perfil"><b>{{ nombreUsuario }}</b></a>
+  </div>
+</header>

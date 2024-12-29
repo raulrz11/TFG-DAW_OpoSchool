@@ -1,0 +1,98 @@
+<app-header></app-header>
+
+<p-toast></p-toast>
+
+<div class="card" style="padding: 30px;">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Nuevo Profesor" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="newProfesor()"></button>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar profesores..." (input)="onFilter($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="profesores" [rows]="10" [paginator]="true" [globalFilterFields]="['nombre', 'apellidos', 'email', 'telefono', 'dni']" [tableStyle]="{'min-width': '75rem'}"
+           [rowHover]="true" dataKey="id">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre" style="min-width:10rem; text-align: center;">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th pSortableColumn="apellidos" style="min-width:12rem; text-align: center;">Apellidos <p-sortIcon field="apellidos"></p-sortIcon></th>
+        <th pSortableColumn="email" style="min-width:12rem; text-align: center;">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="telefono" style="min-width:10rem; text-align: center;">Telefono <p-sortIcon field="telefono"></p-sortIcon></th>
+        <th pSortableColumn="dni" style=" min-width:10rem; text-align: center;">DNI <p-sortIcon field="dni"></p-sortIcon></th>
+        <th style="min-width:10rem; text-align: center;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-profesor>
+      <tr>
+        <td style="min-width:10rem; text-align: center;">{{profesor.nombre}}</td>
+        <td style="min-width:12rem; text-align: center;">{{profesor.apellidos}}</td>
+        <td style="min-width:12rem; text-align: center;">{{profesor.email}}</td>
+        <td style="min-width:10rem; text-align: center;">{{profesor.telefono}}</td>
+        <td style="min-width:10rem; text-align: center;">{{profesor.dni}}</td>
+        <td style="min-width:10rem; text-align: center;">
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-sm mr-2" (click)="editProfesor(profesor)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm" (click)="deleteProfesor(profesor)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        {{profesores ? profesores.length : 0 }} profesores encontrados.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="profesorDialog" [style]="{width: '450px'}" [modal]="true" header="Detalles del Profesor" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input type="text" pInputText id="nombre" [(ngModel)]="profesor.nombre" autofocus />
+      <div *ngIf="errors?.nombre" class="error-message">
+        *{{ errors.nombre }}
+      </div>
+    </div>
+    <div class="field">
+      <label for="apellidos">Apellidos</label>
+      <input type="text" pInputText id="apellidos" [(ngModel)]="profesor.apellidos" />
+      <div *ngIf="errors?.apellidos" class="error-message">
+        *{{ errors.apellidos }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="text" pInputText id="email" [(ngModel)]="profesor.email" />
+      <div *ngIf="errors?.email" class="error-message">
+        *{{ errors.email }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="telefono">Telefono</label>
+      <input type="text" pInputText id="telefono" [(ngModel)]="profesor.telefono" />
+      <div *ngIf="errors?.telefono" class="error-message">
+        *{{ errors.telefono }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="dni">DNI</label>
+      <input type="text" pInputText id="dni" [(ngModel)]="profesor.dni" />
+      <div *ngIf="errors?.dni" class="error-message">
+        *{{ errors.dni }}
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Guardar" class="p-button-success m-2" (click)="saveProfesor()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

@@ -1,0 +1,142 @@
+.container{
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.containerTareas {
+  display: flex;
+  flex-direction: column;
+  background-color: #333333;
+  padding: 20px;
+  width: 25%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.containerTareaEntrega{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  overflow-y: auto;
+}
+
+.containerTarea{
+  width: 100%;
+  padding: 30px;
+  border-bottom: 2px solid #eaf3db
+}
+
+.containerEntrega {
+  width: 100%;
+  padding: 30px;
+}
+
+h1,h4{
+  color: #333333;
+}
+
+.divTarea {
+  background-color: #f6f6f6;
+  border-radius: 40px;
+  padding: 5px 20px;
+  margin: 20px 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.divTarea.selected {
+  transform: translateX(15px);
+  background-color: #e1fe46;
+}
+
+.tablaFecha{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.tablaFecha table {
+  border-collapse: collapse;
+}
+
+.tablaFecha td {
+  border: 3px solid white;
+  background-color: lightgray;
+  padding: 15px;
+  font-size: 15px;
+  text-align: center;
+}
+
+td.finalizada {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+td.activa {
+  background-color: #689f38 !important;
+  color: white;
+}
+
+.container button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  margin: 0 5px 0 5px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: #fed883;
+}
+
+i{
+  color: white;
+}
+
+.hojaEntrega {
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.header h2 {
+  text-align: start;
+  color: #333;
+  flex-grow: 1;
+  margin: 0;
+}
+
+.datos {
+  margin: 15px 0;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.datos:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: bold;
+  color: #333;
+}
+
+.valor {
+  color: #555;
+  margin-left: 10px;
+}

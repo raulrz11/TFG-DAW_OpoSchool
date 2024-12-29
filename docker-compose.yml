@@ -1,0 +1,61 @@
+version: '3.8'
+
+networks:
+  mynetwork:
+
+services:
+  postgres:
+    container_name: oposchool-postgres
+    image: postgres:12-alpine
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oposchool-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/oposchool
+      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+
+#  frontend:
+#    build:
+#      context: ./AngOposchool
+#      dockerfile: Dockerfile
+#    container_name: oposchool-frontend
+#    ports:
+#      - "4200:4200"
+#    depends_on:
+#      - backend
+#    networks:
+#      - mynetwork
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+
+volumes:
+  pg_data:

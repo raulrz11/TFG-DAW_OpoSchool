@@ -1,0 +1,9 @@
+- revisar los cascades bien y los guardados en la base de datos para ver si se puede omitir alguno
+- probar crear tarea y entrega sin pasarle el archivo
+- actualizar tarjeta  foto de perfil
+- probar todos los delete
+
+
+PARA EL DOMINGO:
+1 Cors global y metodos currentuser
+2 configuration principal angular y servicio y componente login

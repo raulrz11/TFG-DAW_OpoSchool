@@ -1,0 +1,157 @@
+<app-header></app-header>
+
+<p-toast></p-toast>
+
+<div class="card" style="padding: 30px;">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Nuevo Grupo" icon="pi pi-plus mr-2" class="p-button-success mr-2" (click)="newGrupo()"></button>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar grupos..." (input)="onFilter($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="grupos" [rows]="10" [paginator]="true" [globalFilterFields]="['nombre', 'fechaClase', 'horaClase', 'duracionClase', 'profesor', 'alumnos']" [tableStyle]="{'min-width': '75rem'}"
+           [rowHover]="true" dataKey="id">
+
+
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre" style="min-width:8rem; text-align: center;">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th pSortableColumn="fechaClase" style="min-width:12rem; text-align: center;">Fecha clase <p-sortIcon field="fechaClase"></p-sortIcon></th>
+        <th pSortableColumn="horaClase" style="min-width:10rem; text-align: center;">Hora clase <p-sortIcon field="horaClase"></p-sortIcon></th>
+        <th pSortableColumn="duracionClase" style="min-width:10rem; text-align: center;">Duracion clase <p-sortIcon field="duracionClase"></p-sortIcon></th>
+        <th pSortableColumn="profesor.nombre" style=" min-width:10rem; text-align: center;">Profesor <p-sortIcon field="profesor.nombre"></p-sortIcon></th>
+        <th pSortableColumn="alumnos" style=" min-width:8rem; text-align: center;">Alumnos <p-sortIcon field="alumnos"></p-sortIcon></th>
+        <th style="min-width:10rem; text-align: center;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-grupo>
+      <tr>
+        <td style="min-width:8rem; text-align: center;">{{grupo.nombre}}</td>
+        <td style="min-width:10rem; text-align: center;">{{grupo.fechaClase | date: 'dd-MM-yyyy'}}</td>
+        <td style="min-width:12rem; text-align: center;">{{grupo.horaClase}}</td>
+        <td style="min-width:10rem; text-align: center;">{{grupo.duracionClase.slice(2)}}</td>
+        <td style="min-width:10rem; text-align: center;">{{grupo.profesor}}</td>
+        <td style="min-width:8rem; text-align: center;" (click)="showAlumnos(grupo)">{{grupo.alumnos.length}} <i class="fas fa-users"></i></td>
+        <td style="min-width:10rem; text-align: center;">
+          <button pButton pRipple icon="pi pi-user-plus" class="p-button-rounded p-button-success p-button-sm mr-2" (click)="showAlumnosToAdd(grupo)"></button>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-sm mr-2" (click)="editGrupo(grupo)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm" (click)="deleteGrupo(grupo)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        {{grupos ? grupos.length : 0 }} grupos encontrados.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="grupoDialog" [style]="{width: '450px'}" [modal]="true" header="Detalles del Grupo" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input type="text" pInputText id="nombre" [(ngModel)]="grupo.nombre" autofocus />
+      <div *ngIf="errors?.nombre" class="error-message">
+        *{{ errors.nombre }}
+      </div>
+    </div>
+    <div class="field">
+      <label for="fechaClase">Fecha clase</label>
+      <p-calendar id="fechaClase" [(ngModel)]="grupo.fechaClase" [showIcon]="true" [touchUI]="true"></p-calendar>
+      <div *ngIf="errors?.fechaClase" class="error-message">
+        *{{ errors.fechaClase }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="horaClase">Hora clase</label>
+      <p-calendar id="horaClase" [(ngModel)]="grupo.horaClase" [timeOnly]="true" [showIcon]="true"></p-calendar>
+      <div *ngIf="errors?.horaClase" class="error-message">
+        *{{ errors.horaClase }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="duracionClase">Duracion clase</label>
+      <p-dropdown id="duracionClase" [(ngModel)]="grupo.duracionClase" [options]="duraciones" optionLabel="label" placeholder="Sleccionar duracion" appendTo="body"></p-dropdown>
+      <div *ngIf="errors?.duracionClase" class="error-message">
+        *{{ errors.duracionClase }}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="profesor">Profesor</label>
+      <p-dropdown id="profesor" [(ngModel)]="grupo.profesor" [options]="profesores" optionLabel="nombre" placeholder="Sleccionar profesor" appendTo="body"></p-dropdown>
+      <div *ngIf="errors?.profesor" class="error-message">
+        *{{ errors.profesor }}
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Guardar" class="p-button-success m-2" (click)="saveGrupo()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="alumnosDialog" [style]="{width: '550px'}" [modal]="true" header="Alumnos del grupo {{grupoNombre}}" styleClass="p-fluid">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left"></ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar alumnos..." (input)="onFilterAlumnos($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dtAlumnos [value]="alumnos" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" [globalFilterFields]="['nombre', 'apellidos']">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre" style="max-width:2rem;">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th style="max-width:2rem; text-align: end;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-alumno>
+      <tr>
+        <td style="max-width:2rem;">{{alumno.nombre + ' ' + alumno.apellidos}}</td>
+        <td style="max-width:2rem; text-align: end;">
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm" (click)="removeAlumno(alumno)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>
+
+<p-dialog [(visible)]="alumnosToAddDialog" [style]="{width: '550px'}" [modal]="true" header="Alumnos a agregar" styleClass="p-fluid">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left"></ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar alumnos..." (input)="onFilterAlumnos($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dtAlumnos [value]="alumnosToAdd" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" [globalFilterFields]="['nombre', 'apellidos']">
+        <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre" style="max-width:2rem;">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th style="max-width:2rem; text-align: end;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-alumno>
+      <tr>
+        <td style="max-width:2rem;">{{alumno.nombre + ' ' + alumno.apellidos}}</td>
+        <td style="max-width:2rem; text-align: end;">
+          <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success p-button-sm" (click)="addAlumno(alumno, grupo)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

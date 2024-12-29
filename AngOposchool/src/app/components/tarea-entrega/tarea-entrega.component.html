@@ -1,0 +1,97 @@
+<div style="height: 100%; display: flex; flex-direction: column; overflow: hidden;">
+  <app-header></app-header>
+
+  <div class="container">
+    <div class="containerTareas">
+      <div class="divTarea" *ngFor="let tarea of tareas" (click)="selectTarea(tarea)" [class.selected]="selectedTarea?.id == tarea.id">
+        <h4>{{ tarea.titulo }}</h4>
+      </div>
+    </div>
+    <div class="containerTareaEntrega">
+      <div class="containerTarea" *ngIf="tarea">
+        <h1>
+          <b>{{ tarea.titulo }}</b>
+        </h1>
+        <div style="overflow-y: scroll; scrollbar-width: none; padding: 20px; margin: 40px 0; background-color: #ededed; border-radius: 20px; width: 100%; height: 200px; box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.2)">
+          <p>
+            {{ tarea.descripcion }}
+            <br>
+            <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ornare aliquam nisl, at efficitur ex laoreet eu. Pellentesque nec dictum ligula. Donec ante tellus, fermentum sed neque quis, ultrices ullamcorper nisi. Proin faucibus dui vitae neque laoreet, sit amet elementum lorem iaculis. Nullam at turpis odio. Nulla finibus molestie risus et gravida.
+            <br>
+            Etiam ipsum mi, vestibulum eget erat id, dignissim sagittis nunc. Phasellus vel mollis lacus. Suspendisse ornare elementum lectus, sit amet blandit lorem pulvinar id. Duis ultricies urna quis ex faucibus viverra. Fusce quis molestie est.
+            <br>
+            Cras in metus vel lacus lacinia mollis sit amet et libero. Ut sed tortor sapien. Donec convallis rutrum ligula ac elementum. Donec porta odio dui.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ornare aliquam nisl, at efficitur ex laoreet eu.
+            <br>
+            Pellentesque nec dictum ligula. Donec ante tellus, fermentum sed neque quis, ultrices ullamcorper nisi. Proin faucibus dui vitae neque laoreet, sit amet elementum lorem iaculis.
+            <br>
+            Nullam at turpis odio. Nulla finibus molestie risus et gravida. Etiam ipsum mi, vestibulum eget erat id, dignissim sagittis nunc. Phasellus vel mollis lacus.
+            <br>
+            Suspendisse ornare elementum lectus, sit amet blandit lorem pulvinar id. Duis ultricies urna quis ex faucibus viverra. Fusce quis molestie est. Cras in metus vel lacus lacinia mollis sit amet et libero. Ut sed tortor sapien. Donec convallis rutrum ligula ac elementum. Donec porta odio dui.
+          </p>
+        </div>
+        <div class="tablaFecha">
+          <table>
+            <tr>
+              <td>Fin de la tarea</td>
+              <td>{{ tarea.fechaEntrega | date: 'dd-MM-yyyy' }}</td>
+              <td style="width: 220px;" [ngClass]="{'finalizada': getTiempoRestante(tarea.fechaEntrega).finalizada, 'activa': !getTiempoRestante(tarea.fechaEntrega).finalizada}">Quedan {{ getTiempoRestante(tarea.fechaEntrega).texto }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="containerEntrega">
+        <div *ngIf="!entrega" style="display: flex; justify-content: center; font-style: italic; font-size: 15px;">No se ha hecho la entrega de la tarea por el momento</div>
+        <div class="hojaEntrega" *ngIf="entrega">
+          <div class="header">
+            <h2>Detalles de la entrega</h2>
+            <button (click)="editEntrega(entrega)" type="button" title="Editar entrega" id="editarEntrega">
+              <i class="fas fa-pencil"></i>
+            </button>
+            <a [href]="entrega.archivoUrl + '?download=false'" target="_blank" style="text-decoration: none">
+              <button type="button" title="Ver archivo" style="background-color: #333333;">
+                <i class="fas fa-file"></i>
+              </button>
+            </a>
+          </div>
+
+          <div class="datos">
+            <span class="label">Estado:</span>
+            <span class="valor">{{ entrega.estado }}</span>
+          </div>
+
+          <div class="datos">
+            <span class="label">Fecha de la entrega:</span>
+            <span class="valor">{{ entrega.fechaEntrega | date: 'dd-MM-yyyy'}}</span>
+          </div>
+
+          <div class="datos">
+            <span class="label">Calificación:</span>
+            <span class="valor">{{ entrega.calificacion }}/10</span>
+          </div>
+
+          <div class="datos">
+            <span class="label">Comentarios:</span>
+            <span class="valor">{{ entrega.comentarios }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog [(visible)]="entregaDialog" [style]="{width: '450px'}" [modal]="true" header="Detalles de la Entrega" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="archivoEntregaUrl">Archivo de la entrega</label>
+      <input type="file" pInputText id="archivoEntregaUrl" (change)="onFileSelected($event)" required />
+      <div *ngIf="errors?.archivoUrl" class="error-message">
+        *{{ errors.archivoUrl }}
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Entregar" class="p-button-success m-2" (click)="updateEntrega()"></button>
+  </ng-template>
+</p-dialog>

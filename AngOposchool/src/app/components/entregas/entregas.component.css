@@ -1,0 +1,31 @@
+select {
+  padding: 10px 15px;
+  margin: 0 20px;
+  min-width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  background-color: #f8f8f8;
+  color: #333;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+select:hover {
+  border-color: #333333;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+select:focus {
+  outline: none;
+  border-color: #e1fe46;
+}
+
+.error-message{
+    width: 100%;
+    padding: 5px 10px;
+    text-align: start;
+    font-size: 13px;
+    color: #dc3545;
+}

@@ -1,0 +1,40 @@
+<app-header></app-header>
+
+<div class="card" style="padding: 30px;">
+  <p-toolbar styleClass="mb-4 gap-2" [style]="{ 'background-color': 'transparent', 'border': 'none' }">
+    <ng-template pTemplate="left"></ng-template>
+    <ng-template pTemplate="right">
+      <input type="text" pInputText placeholder="Buscar usuarios..." (input)="onFilter($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="usuarios" [rows]="10" [paginator]="true" [globalFilterFields]="['nombre', 'username', 'email', 'rols', 'alumno']" [tableStyle]="{'min-width': '75rem'}"
+           [rowHover]="true" dataKey="id">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre" style="min-width:10rem; text-align: center;">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th pSortableColumn="username" style="min-width:12rem; text-align: center;">Usuario <p-sortIcon field="username"></p-sortIcon></th>
+        <th pSortableColumn="email" style="min-width:12rem; text-align: center;">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="rols" style="min-width:10rem; text-align: center;">Roles <p-sortIcon field="rols"></p-sortIcon></th>
+        <th pSortableColumn="alumno" style=" min-width:10rem; text-align: center;">Alumno <p-sortIcon field="alumno"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-usuario>
+      <tr>
+        <td style="min-width:10rem; text-align: center;">{{usuario.nombre}}</td>
+        <td style="min-width:12rem; text-align: center;">{{usuario.username}}</td>
+        <td style="min-width:12rem; text-align: center;">{{usuario.email}}</td>
+        <td style="min-width:10rem; text-align: center;">{{usuario.rols}}</td>
+        <td style="min-width:10rem; text-align: center;">{{usuario.alumno}}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        {{usuarios ? usuarios.length : 0 }} usuarios encontrados.
+      </div>
+    </ng-template>
+  </p-table>
+</div>

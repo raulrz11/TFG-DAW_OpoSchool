@@ -1,0 +1,85 @@
+<app-header></app-header>
+
+<p-toast></p-toast>
+
+<div class="container">
+    <div class="dataUsuario">
+        <div style="width: 100%; display: flex; justify-content: space-evenly; padding: 30px;" *ngIf="usuario">
+            <div style="display: flex; align-items: center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/5675/5675152.png" width="300px" height="300px">
+            </div>
+            <div style="display: flex; flex-direction: column;" *ngIf="alumno">
+                <h3>Datos del alumno</h3>
+                <p><b>Nombre: </b>{{ alumno.nombre }}</p>
+                <p><b>Apellidos: </b>{{ alumno.apellidos }}</p>
+                <p><b>Nombre de usuario: </b>{{ usuario.username }}</p>
+                <p><b>Email: </b>{{ alumno.email }}</p>
+                <p><b>Telefono: </b>{{ alumno.telefono }}</p>
+                <p><b>Dni: </b>{{ alumno.dni }}</p>
+            </div>
+            <div style="display: flex; flex-direction: column;" *ngIf="profesor">
+                <h3>Datos del profesor</h3>
+                <p><b>Nombre: </b>{{ profesor.nombre }}</p>
+                <p><b>Apellidos: </b>{{ profesor.apellidos }}</p>
+                <p><b>Nombre de usuario: </b>{{ usuario.username }}</p>
+                <p><b>Email: </b>{{ profesor.email }}</p>
+                <p><b>Telefono: </b>{{ profesor.telefono }}</p>
+                <p><b>Dni: </b>{{ profesor.dni }}</p>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: space-evenly; padding: 20px; border-top: 2px solid #e1fe46; background-color: #333333; border-bottom: 2px solid #e1fe46; border-left: 2px solid #e1fe46; box-shadow: inset 0 0 10px black;">
+            <button (click)="editEmail()" type="button" style="background-color: white; color: #333333; border: 2px solid #e1fe46;">Cambiar email</button>
+            <button (click)="editPassword()" type="button" style="background-color: white; color: #333333; border: 2px solid #e1fe46;">Cambiar contrasena</button>
+            <button (click)="cancelSubscription()" type="button" style="background-color: #dc3545; color: white;">Cancelar subscripcion</button>
+        </div>
+    </div>
+    <div class="dataProfesorGrupo" *ngIf="alumno && grupo">
+        <div style="border-bottom: 2px solid #e1fe46;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/5675/5675152.png" alt="" width="100px" height="100px">
+            </div>
+            <h3>Detalles del profesor</h3>
+            <p><b>Nombre: </b>{{profesorAlumno.nombre}}</p>
+            <p><b>Correo: </b>{{profesorAlumno.email}}</p>
+        </div>
+        <div style="border-top: 2px solid #e1fe46;">
+            <h3>Detalles del grupo:</h3>
+            <p><b>Grupo: </b>{{grupo.nombre}}</p>
+            <p><b>Fecha de la clase: </b>{{grupo.fechaClase | date: 'dd-MM-yyyy'}}</p>
+            <p><b>Hora de la clase: </b>{{grupo.horaClase}}</p>
+            <p><b>Duracion de la clase: </b>{{grupo.duracionClase.slice(2)}}</p>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="emailDialog" [style]="{width: '450px'}" [modal]="true" header="Editar email" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <input type="text" pInputText id="email" [(ngModel)]="formDataEmail.email" required />
+            <div *ngIf="errors?.email" class="error-message">
+                *{{ errors.email }}
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Guardar" class="p-button-success m-2" (click)="updateEmail()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="passwordDialog" [style]="{width: '450px'}" [modal]="true" header="Editar contrasena" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <input type="password" pInputText id="password" [(ngModel)]="formDataPassword.password" required />
+            <div *ngIf="errors?.password" class="error-message">
+                *{{ errors.password }}
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Guardar" class="p-button-success m-2" (click)="updatePassword()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

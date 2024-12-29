@@ -1,0 +1,46 @@
+<div class="container" [class.active]="isActive" id="container">
+  <div class="form-container sign-up">
+    <div class="register">
+      <h1>Registrate</h1>
+      <div style="border: 2px solid #e1fe46; width: 50%; margin: 20px;"></div>
+      <p style="margin: 5px;">Accede a la academia online</p>
+      <button (click)="goRegister()">Registrarse</button>
+    </div>
+  </div>
+  <div class="form-container sign-in">
+    <form (ngSubmit)="formSubmit()">
+      <h1>Inicia sesion</h1>
+      <div style="border: 2px solid #e1fe46; width: 60%; margin: 20px;"></div>
+      <input type="text" [(ngModel)]="loginData.username" name="username" required placeholder="Nombre de usuario">
+      <div *ngIf="errors?.username" class="error-message">
+        *{{ errors.username }}
+      </div>
+      <div *ngIf="errors?.error" class="error-message">
+        *{{ errors.message }}
+      </div>
+      <input type="password" [(ngModel)]="loginData.password" name="password" required placeholder="Contrasena">
+      <div *ngIf="errors?.password" class="error-message">
+        *{{ errors.password }}
+      </div>
+      <div *ngIf="errors?.error" class="error-message">
+        *{{ errors.message }}
+      </div>
+      <a href="#">Olvidaste tu contrasena?</a>
+      <button>Iniciar sesion</button>
+    </form>
+  </div>
+  <div class="toggle-container">
+    <div class="toggle">
+      <div class="toggle-panel toggle-left">
+        <h1>Bienvenido de vuelta</h1>
+        <p>Inicia sesion si ya tienes una cuenta</p>
+        <button class="btn-toggle" (click)="toggleLogin()" id="login-toggle">Iniciar sesion</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+        <h1>Bienvenido, Estudiante!</h1>
+        <p>Registrate si aun no tienes una cuenta</p>
+        <button class="btn-toggle" (click)="toggleRegister()" id="register-toggle">Registrarse</button>
+      </div>
+    </div>
+  </div>
+</div>

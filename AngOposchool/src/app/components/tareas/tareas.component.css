@@ -1,0 +1,187 @@
+.container{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.toolbar{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 20px 0 20px;
+}
+
+.toolbar button{
+  padding: 10px;
+  border: none;
+  background-color: #689f38;
+  color: white;
+  cursor: pointer;
+}
+
+select {
+  padding: 10px 15px;
+  margin: 0 20px;
+  min-width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  background-color: #f8f8f8;
+  color: #333;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  z-index: 999;
+}
+
+select:hover {
+  border-color: #333333;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+select:focus {
+  outline: none;
+  border-color: #e1fe46;
+}
+
+.toolbar input{
+  padding: 10px 15px;
+  border: none;
+  background-color: #333333;
+  color: white;
+  border-radius: 50px;
+}
+
+.toolbar input:focus{
+  outline: none;
+}
+
+.toolbar input::placeholder{
+  color: lightgray;
+}
+
+.panelTareas{
+  width: 350px;
+  height: 350px;
+  border-radius: 20px;
+  margin: 30px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+  background-color: #333333;
+  color: white;
+}
+
+.acciones {
+  height: 1%;
+  display: flex;
+  justify-content: end;
+  padding: 10px;
+}
+
+.acciones button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  margin: 5px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.acciones button i {
+  color: white;
+  font-size: 10px
+}
+
+.bodyTareas {
+  height: 90%;
+}
+
+.bodyTareas h3 {
+  margin-top: 20px;
+  line-height: 1;
+}
+
+.bodyTareas a {
+  font-size: 15px;
+  text-decoration: none;
+  color: #e1fe46;
+}
+
+.bodyTareas button {
+  border-radius: 50%;
+  border: none;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.bodyTareas button:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
+.bodyTareas button i {
+  color: #333333;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10px auto 20px auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 20px;
+  width: 30%;
+  height: 90%;
+}
+
+.close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 50%;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.archivoPreview{
+  border: none;
+}
+
+.error-message{
+  width: 100%;
+  padding: 5px 10px;
+  text-align: start;
+  font-size: 13px;
+  color: #dc3545;
+}
